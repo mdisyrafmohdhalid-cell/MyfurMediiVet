@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MediVet CRM - Desktop Portal</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <style>
+        .paw-pattern {
+            background-color: #f8fafc;
+            background-image: url("https://www.transparenttextures.com/patterns/paws.png");
+        }
+
+        .brand-purple {
+            background-color: #2D2A6E;
+        }
+
+        .accent-teal {
+            background-color: #A0CED9;
+        }
+
+        .hidden-content {
+            display: none;
+        }
+
+        .nav-link.active {
+            background-color: #A0CED9;
+            color: #1E2145;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 font-sans">
+
+    <!-- LOGIN -->
+
+    <div id="login-container"
+        class="fixed inset-0 z-50 flex items-center justify-center brand-purple p-6">
+
+        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-md w-full text-slate-800">
+
+            <div class="text-center mb-8">
+
+                <div
+                    class="w-16 h-16 brand-purple text-white rounded-full mx-auto flex items-center justify-center p-2 mb-4">
+                    <i class="fas fa-paw text-2xl"></i>
+                </div>
+
+                <h1 class="text-2xl font-black text-slate-800">
+                    John's MediVet
+                </h1>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Sign in to access your dashboard
+                </p>
+
+            </div>
+
+            <form onsubmit="event.preventDefault(); proceedToDashboard();" class="space-y-4">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">
+                        Email Address
+                    </label>
+
+                    <input type="email"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300"
+                        placeholder="john.doe@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">
+                        Password
+                    </label>
+
+                    <input type="password"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300"
+                        placeholder="••••••••">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-teal-500 text-white font-bold py-3 rounded-xl hover:bg-teal-600 transition-all mt-4">
+                    Log In
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div id="dashboard-container" class="hidden h-screen overflow-hidden flex">
+
+        <!-- SIDEBAR -->
+
+        <aside class="w-64 brand-purple text-white flex flex-col shadow-xl">
+
+            <div class="p-8 text-center border-b border-white/10">
+
+                <div
+                    class="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center p-2 mb-3">
+                    <i class="fas fa-paw text-2xl text-teal-600"></i>
+                </div>
+
+                <h1 class="text-xl font-bold tracking-tight">
+                    John's MediVet
+                </h1>
+
+            </div>
+
+            <nav class="flex-1 p-4 space-y-2 mt-4">
+
+                <button onclick="showSection('dashboard', this)"
+                    class="nav-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all">
+                    <i class="fas fa-th-large w-5"></i>
+                    Dashboard
+                </button>
+
+                <button onclick="showSection('appointments', this)"
+                    class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all opacity-80 hover:bg-white/10">
+                    <i class="fas fa-calendar-alt w-5"></i>
+                    Appointments
+                </button>
+
+                <button onclick="showSection('history', this)"
+                    class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all opacity-80 hover:bg-white/10">
+                    <i class="fas fa-history w-5"></i>
+                    Medical History
+                </button>
+
+                <button onclick="showSection('pets', this)"
+                    class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all opacity-80 hover:bg-white/10">
+                    <i class="fas fa-dog w-5"></i>
+                    My Pets
+                </button>
+
+            </nav>
+
+            <div class="p-4 border-t border-white/10">
+
+                <button onclick="logout()"
+                    class="w-full flex items-center gap-3 px-4 py-3 text-red-300 hover:text-red-100 transition-colors">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- MAIN -->
+
+        <main class="flex-1 overflow-y-auto paw-pattern">
+
+            <header
+                class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10">
+
+                <h2 id="section-title"
+                    class="text-2xl font-bold text-slate-800">
+                    Dashboard
+                </h2>
+
+                <div class="flex items-center gap-4">
+
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-800">
+                            John Doe
+                        </p>
+
+                        <p class="text-xs text-slate-500">
+                            Premium Member
+                        </p>
+                    </div>
+
+                    <div
+                        class="w-10 h-10 rounded-full bg-slate-300 overflow-hidden border-2 border-teal-500">
+                        <img src="https://i.pravatar.cc/150?u=vet" alt="User">
+                    </div>
+
+                </div>
+
+            </header>
+
+            <div class="p-8">
+
+                <!-- DASHBOARD SECTION -->
+
+                <div id="section-dashboard" class="content-section">
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="text-slate-500 text-sm font-bold uppercase mb-2">
+                                Total Pets
+                            </h3>
+
+                            <p id="total-pets-count"
+                                class="text-3xl font-black text-slate-800">
+                                1
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="text-slate-500 text-sm font-bold uppercase mb-2">
+                                Current Status
+                            </h3>
+
+                            <p id="current-status"
+                                class="text-xl font-black text-green-600">
+                                Healthy
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="text-slate-500 text-sm font-bold uppercase mb-2">
+                                Next Appointment
+                            </h3>
+
+                            <p class="text-xl font-black text-teal-600">
+                                Tomorrow, 10:00 AM
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- RECENT PET STATUS -->
+
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+
+                        <div class="flex items-center justify-between mb-6">
+
+                            <div>
+                                <h3 class="text-xl font-black text-slate-800">
+                                    Pet Current Status
+                                </h3>
+
+                                <p class="text-sm text-slate-500">
+                                    Latest pet information
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div id="status-container"
+                            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- APPOINTMENT SECTION -->
+
+                <div id="section-appointments"
+                    class="content-section hidden-content">
+
+                    <div class="flex justify-between items-center mb-6">
+
+                        <h3 class="text-xl font-bold text-slate-800">
+                            Scheduled Appointments
+                        </h3>
+
+                        <button onclick="openBookingModal()"
+                            class="bg-teal-500 text-white px-6 py-2 rounded-xl font-bold hover:bg-teal-600 transition-colors">
+                            + Book New
+                        </button>
+
+                    </div>
+
+                    <div id="appointment-list"
+                        class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+                    </div>
+
+                </div>
+
+                <!-- HISTORY SECTION -->
+
+                <div id="section-history"
+                    class="content-section hidden-content">
+
+                    <div class="max-w-3xl space-y-4">
+
+                        <div
+                            class="bg-white p-6 rounded-2xl border-l-8 border-teal-500 shadow-sm">
+                            <p class="text-xs font-bold text-teal-600 mb-1">
+                                Feb 19, 2026
+                            </p>
+
+                            <h4 class="text-lg font-bold text-slate-800">
+                                General Consultation
+                            </h4>
+
+                            <p class="text-slate-600 mt-2">
+                                Routine check-up completed.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- PETS SECTION -->
+
+                <div id="section-pets"
+                    class="content-section hidden-content">
+
+                    <div class="flex justify-between items-center mb-6">
+
+                        <h3 class="text-2xl font-black text-slate-800">
+                            My Pets
+                        </h3>
+
+                        <button onclick="openPetModal()"
+                            class="bg-teal-500 text-white px-6 py-2 rounded-xl font-bold hover:bg-teal-600 transition-colors">
+                            + Add Pet
+                        </button>
+
+                    </div>
+
+                    <div id="pets-container"
+                        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- APPOINTMENT MODAL -->
+
+    <div id="booking-modal"
+        class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+        <div class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
+
+            <h2 class="text-2xl font-bold mb-6 text-slate-800">
+                Book Appointment
+            </h2>
+
+            <div class="space-y-4">
+
+                <input id="pet-name"
+                    type="text"
+                    placeholder="Pet Name"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <input id="appointment-date"
+                    type="date"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <input id="appointment-time"
+                    type="time"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <select id="appointment-type"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                    <option>Vaccination</option>
+                    <option>Check-up</option>
+                    <option>Surgery</option>
+                    <option>Emergency</option>
+
+                </select>
+
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6">
+
+                <button onclick="closeBookingModal()"
+                    class="px-5 py-2 rounded-xl bg-slate-200">
+                    Cancel
+                </button>
+
+                <button onclick="saveAppointment()"
+                    class="px-5 py-2 rounded-xl bg-teal-500 text-white font-bold">
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PET MODAL -->
+
+    <div id="pet-modal"
+        class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+        <div class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
+
+            <h2 class="text-2xl font-bold mb-6 text-slate-800">
+                Add New Pet
+            </h2>
+
+            <div class="space-y-4">
+
+                <input id="new-pet-name"
+                    type="text"
+                    placeholder="Pet Name"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <input id="new-pet-species"
+                    type="text"
+                    placeholder="Species"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <input id="new-pet-age"
+                    type="text"
+                    placeholder="Age"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <input id="new-pet-weight"
+                    type="text"
+                    placeholder="Weight"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <select id="new-pet-status"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                    <option>Healthy</option>
+                    <option>Under Treatment</option>
+                    <option>Recovering</option>
+                    <option>Critical</option>
+
+                </select>
+
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6">
+
+                <button onclick="closePetModal()"
+                    class="px-5 py-2 rounded-xl bg-slate-200">
+                    Cancel
+                </button>
+
+                <button onclick="savePet()"
+                    class="px-5 py-2 rounded-xl bg-teal-500 text-white font-bold">
+                    Save Pet
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCRIPT -->
+
+    <script>
+
+        const pets = [
+            {
+                name: "Mimi",
+                species: "Cat",
+                age: "2 Years",
+                weight: "4.2 KG",
+                status: "Healthy"
+            }
+        ];
+
+        function showSection(sectionId, element) {
+
+            const title = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+
+            document.getElementById('section-title').innerText = title;
+
+            document.querySelectorAll('.content-section').forEach(el =>
+                el.classList.add('hidden-content'));
+
+            document.getElementById('section-' + sectionId)
+                .classList.remove('hidden-content');
+
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            element.classList.add('active');
+        }
+
+        function proceedToDashboard() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('dashboard-container').classList.remove('hidden');
+        }
+
+        function logout() {
+            document.getElementById('login-container').style.display = 'flex';
+            document.getElementById('dashboard-container').classList.add('hidden');
+        }
+
+        function openBookingModal() {
+            document.getElementById('booking-modal').classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.add('hidden');
+        }
+
+        function openPetModal() {
+            document.getElementById('pet-modal').classList.remove('hidden');
+        }
+
+        function closePetModal() {
+            document.getElementById('pet-modal').classList.add('hidden');
+        }
+
+        function saveAppointment() {
+
+            const petName = document.getElementById('pet-name').value;
+            const appointmentDate = document.getElementById('appointment-date').value;
+            const appointmentTime = document.getElementById('appointment-time').value;
+            const appointmentType = document.getElementById('appointment-type').value;
+
+            if (!petName || !appointmentDate || !appointmentTime) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const appointmentList = document.getElementById('appointment-list');
+
+            const card = document.createElement('div');
+
+            card.className =
+                'appointment-card bg-white p-6 rounded-2xl border border-slate-200 flex justify-between items-center shadow-sm';
+
+            card.innerHTML = `
+                <div class="flex gap-4 items-center">
+
+                    <div class="w-16 h-16 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 font-bold">
+                        ${new Date(appointmentDate).getDate()}/${new Date(appointmentDate).getMonth() + 1}
+                    </div>
+
+                    <div>
+                        <h4 class="font-black text-slate-800">
+                            ${petName}
+                        </h4>
+
+                        <p class="text-sm text-slate-500">
+                            ${appointmentType}
+                        </p>
+
+                        <p class="text-xs text-slate-400">
+                            ${appointmentTime}
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="flex gap-2">
+
+                    <button onclick="editAppointment(this)"
+                        class="bg-slate-100 hover:bg-teal-100 text-slate-600 px-3 py-2 rounded-lg">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
+                    <button onclick="deleteAppointment(this)"
+                        class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-2 rounded-lg">
+                        <i class="fas fa-trash"></i>
+                    </button>
+
+                </div>
+            `;
+
+            appointmentList.appendChild(card);
+
+            closeBookingModal();
+        }
+
+        function editAppointment(button) {
+
+            const card = button.closest('.appointment-card');
+
+            const newName = prompt(
+                'Edit Pet Name:',
+                card.querySelector('h4').innerText
+            );
+
+            if (newName) {
+                card.querySelector('h4').innerText = newName;
+            }
+        }
+
+        function deleteAppointment(button) {
+            button.closest('.appointment-card').remove();
+        }
+
+        function savePet() {
+
+            const name = document.getElementById('new-pet-name').value;
+            const species = document.getElementById('new-pet-species').value;
+            const age = document.getElementById('new-pet-age').value;
+            const weight = document.getElementById('new-pet-weight').value;
+            const status = document.getElementById('new-pet-status').value;
+
+            if (!name || !species || !age || !weight) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            pets.push({
+                name,
+                species,
+                age,
+                weight,
+                status
+            });
+
+            renderPets();
+
+            closePetModal();
+        }
+
+        function renderPets() {
+
+            const petsContainer = document.getElementById('pets-container');
+            const statusContainer = document.getElementById('status-container');
+
+            petsContainer.innerHTML = '';
+            statusContainer.innerHTML = '';
+
+            document.getElementById('total-pets-count').innerText = pets.length;
+
+            document.getElementById('current-status').innerText =
+                pets[pets.length - 1].status;
+
+            pets.forEach((pet, index) => {
+
+                const petCard = document.createElement('div');
+
+                petCard.className =
+                    'accent-teal p-8 rounded-[2rem] shadow-sm relative overflow-hidden';
+
+                petCard.innerHTML = `
+                    <div class="relative z-10">
+
+                        <h3 class="text-3xl font-black text-slate-800 mb-4">
+                            ${pet.name}
+                        </h3>
+
+                        <ul class="space-y-2 text-sm font-bold text-slate-700">
+
+                            <li class="flex justify-between border-b border-white/40 pb-1">
+                                <span>Species</span>
+                                <span>${pet.species}</span>
+                            </li>
+
+                            <li class="flex justify-between border-b border-white/40 pb-1">
+                                <span>Age</span>
+                                <span>${pet.age}</span>
+                            </li>
+
+                            <li class="flex justify-between border-b border-white/40 pb-1">
+                                <span>Weight</span>
+                                <span>${pet.weight}</span>
+                            </li>
+
+                            <li class="flex justify-between">
+                                <span>Status</span>
+                                <span>${pet.status}</span>
+                            </li>
+
+                        </ul>
+
+                        <button onclick="deletePet(${index})"
+                            class="mt-6 bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600">
+                            Delete
+                        </button>
+
+                    </div>
+
+                    <i class="fas fa-paw absolute bottom-[-20px] right-[-10px] text-8xl text-white/20 transform -rotate-12"></i>
+                `;
+
+                petsContainer.appendChild(petCard);
+
+                const statusCard = document.createElement('div');
+
+                statusCard.className =
+                    'bg-slate-50 border border-slate-200 rounded-2xl p-5';
+
+                statusCard.innerHTML = `
+                    <div class="flex items-center justify-between">
+
+                        <div>
+                            <h4 class="font-black text-slate-800">
+                                ${pet.name}
+                            </h4>
+
+                            <p class="text-sm text-slate-500 mt-1">
+                                ${pet.species}
+                            </p>
+                        </div>
+
+                        <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-2 rounded-full">
+                            ${pet.status}
+                        </span>
+
+                    </div>
+                `;
+
+                statusContainer.appendChild(statusCard);
+
+            });
+        }
+
+        function deletePet(index) {
+
+            pets.splice(index, 1);
+
+            if (pets.length === 0) {
+
+                pets.push({
+                    name: "No Pet",
+                    species: "-",
+                    age: "-",
+                    weight: "-",
+                    status: "No Status"
+                });
+            }
+
+            renderPets();
+        }
+
+        renderPets();
+
+    </script>
+
+</body>
+
+</html>
